@@ -1,0 +1,51 @@
+/* Hide site name and slogan */
+#name-and-slogan {
+	text-indent: -9999px;
+}
+
+/* Keep menu fixed at top */
+#header-menu-wrapper {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+}
+body.admin-menu #header-menu-wrapper {
+	top: 30px;
+}
+
+#header-wrapper {
+	margin-top: 40px;
+}
+
+#edit-comment-body-und-0-format,
+#edit-body-und-0-format {
+	display: none;
+}
+fieldset.group-tournament-men div.odd + div.even, 
+fieldset.group-tournament-women div.odd + div.even {
+	border-top: 1px solid black;
+}
+.wysiwyg-toggle-wrapper {
+	text-align: right;
+}
+div.group-left.two-col-40-60 {
+	width: 40%;
+}
+div.group-right.two-col-40-60 {
+	width: 60%;
+}
+div#sponsorer img {
+	border: 1px solid #e1e1e1;
+}
+h1.page-title,
+.node h2.node-title {
+	margin-bottom: 10px;
+}
+.node-type-blog-item div.field-name-field-blog-item-image {
+	float: right;
+	padding-bottom: 10px;
+	padding-left: 20px;
+}
+.field-type-taxonomy-term-reference .field-label {
+	color: #2E2E2E;
+}

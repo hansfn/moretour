@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * @file
+ *   The Møre Tour module.
+ *
+ * Contains variuos custom stuff needed for moretour.no. 
+ * Rules are defined in moretour.rules.inc.
+ */
+
+/**
+ * Implements hook_node_validate().
+ *
+ * - Avoid duplicate signup to tournaments.
+ * - Avoid duplicate registration of players.
+ */
+function moretour_node_validate($node, $form) {
+  global $user;
+  // Let admins and organizer do whatever they want ...
+  if (!in_array('spiller', $user->roles)) {
+    return;
+  }
+  // FIXME: Make this a visible config option.
+  $current_year_tid = variable_get('moretour_current_year_tid');
+  if (isset($node->nid)) {
+    $lang = $node->language;
+  } else {
+    $lang = LANGUAGE_NONE;
+  }
+  if ($node->type == 'signup') {
+    $tid = $node->field_tournament[LANGUAGE_NONE][0]['nid'];
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'signup')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('field_year', 'tid', $current_year_tid, '=')
+      ->fieldCondition('field_tournament', 'nid', $tid, '=');
+
+    $result = $query->execute();
+    if (isset($result['node'])) {
+      $signups = entity_load('node', array_keys($result['node']));
+      foreach ($signups as $signup) {
+	if (isset($node->nid) && ($signup->nid == $node->nid)) {
+	  break;
+	}
+	if (($signup->uid == $node->uid) && ($node->uid == $user->uid)) {
+	  $link = l('en påmelding', 'node/'.$signup->nid);
+    	  form_set_error('signup_node_form', 'Du har allerede opprettet ' . $link . ' for turnerningen ' . $signup->title . '.');
+	  break;
+	}
+	if (!empty($signup->field_player_1)) {
+	  if ($signup->field_player_1[LANGUAGE_NONE][0]['uid'] == $node->uid) {
+	    $link = l('meldt på', 'node/'.$signup->nid);
+	    form_set_error('signup_node_form', 
+	      'Du er allerede allerede ' . $link . ' turnerningen ' . $signup->title . ' som spiller 1.');
+	    break;
+	  }
+	  if (!empty($node->field_player_2) &&
+	    	($signup->field_player_1[LANGUAGE_NONE][0]['uid'] == $node->field_player_2[LANGUAGE_NONE][0]['uid'])) {
+	    $link = l('meldt på', 'node/'.$signup->nid);
+	    form_set_error('signup_node_form', 
+	      'Makkeren din er allerede allerede ' . $link . ' turnerningen ' . $signup->title . ' som spiller 1.');
+	    break;
+	  }
+	}
+	if (!empty($signup->field_player_2)) {
+	  if ($signup->field_player_2[LANGUAGE_NONE][0]['uid'] == $node->uid) {
+	    $link = l('meldt på', 'node/'.$signup->nid);
+	    form_set_error('signup_node_form', 
+	      'Du er allerede allerede ' . $link . ' turnerningen ' . $signup->title . ' som spiller 2.');
+	    break;
+	  }
+	  if (!empty($node->field_player_2) &&
+	    	($signup->field_player_2[LANGUAGE_NONE][0]['uid'] == $node->field_player_2[LANGUAGE_NONE][0]['uid'])) {
+	    $link = l('meldt på', 'node/'.$signup->nid);
+	    form_set_error('signup_node_form', 
+	      'Makkeren din er allerede allerede ' . $link . ' turnerningen ' . $signup->title . ' som spiller 2.');
+	    break;
+	  }
+	}
+      }
+    }
+  } 
+  // Used for the 2011 site.
+  elseif ($node->type == 'player') {
+    /* Test case for broken token_replace: */
+    /*
+    dpm($node);
+    // $pattern = variable_get('ant_pattern_' . $node->type, '');
+    $pattern = '[node:field-year]';
+    $title = token_replace($pattern, array('node' => $node), array('sanitize' => FALSE));
+    dpm("moretour_node_validate: ". $title);
+    */
+    // token_replace is broken - maybe because of the token field patch.
+    // So I can't use auto_nodetitle_set_title - argh!
+    $result_fn = db_query('SELECT entity_id FROM {field_data_field_player_firstname} WHERE field_player_firstname_value = :name', 
+      array(':name' => $node->field_player_firstname[$lang][0]['value']));
+    $result_ln = db_query('SELECT entity_id FROM {field_data_field_player_lastname} WHERE field_player_lastname_value = :name', 
+      array(':name' => $node->field_player_lastname[$lang][0]['value']));
+    if (($result_fn->rowCount() > 0) && ($result_ln->rowCount() > 0)) {
+      $existing_nid = $result_fn->fetchField();
+      // The firstname and lastname must be on the same entity before it is a duplicate
+      if ($existing_nid == $result_ln->fetchField()) {
+	// Catch addition of new nodes and updating of existing nodes.
+	if (!isset($node->nid) || ($node->nid != $existing_nid)) {
+	  $link = l('en spiller', 'node/'.$existing_nid);
+	  form_set_error('player_node_form', 'Det eksisterer allerede '.$link.' med dette navnet.');
+	}
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function moretour_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/*
+ * Implements hook_form_alter().
+ */
+function moretour_form_alter(&$form, &$form_state, $form_id) {
+  // Ensure that the current year is selected for signups and tournaments.
+  if (($form_id == 'signup_node_form') || ($form_id == 'tournament_with_signup_node_form')) {
+    $current_year_tid = variable_get('moretour_current_year_tid');
+    $lang = $form['field_year']['#language'];
+    $form['field_year'][$lang]['#default_value'] = array($current_year_tid);
+    $form['field_year']['#disabled'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function moretour_form_signup_node_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  if (in_array('spiller', $user->roles)) {
+    $form['field_score']['#access'] = FALSE;
+    $form['field_place']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Making it clear that we use our full names for user registration.
+ */
+function moretour_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  $form['account']['name']['#title'] = 'Brukernavn / navn';
+  $form['account']['name']['#description'] = 'Ditt fulle navn - "Fornavn Etternavn". Norske tegn går helt fint.';
+}

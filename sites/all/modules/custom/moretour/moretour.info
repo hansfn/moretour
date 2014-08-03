@@ -1,0 +1,6 @@
+name = "Møre Tour"
+descripion = "Implements functionality needed for Møre Tour"
+dependencies[] = rules
+dependencies[] = views
+package = Other
+core = 7.x
