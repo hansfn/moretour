@@ -49,8 +49,8 @@ function moretour_corolla_preprocess(&$variables, $hook) {
       $variables['head_title'] .= " $year";
     }
     // Use 2013 specific logo
-    if (!empty($variables['logo'])) {
-      $variables['logo'] = str_replace('orange', $year, $variables['logo']);
+    if (!empty($variables['site_logo'])) {
+      $variables['site_logo'] = str_replace('orange', $year, $variables['site_logo']);
     }
   }
 }

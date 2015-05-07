@@ -1,34 +1,30 @@
-; $Id: corolla.info,v 1.23 2011/01/01 13:20:14 jarek Exp $
-
 name        = Møre Tour Corolla
 description = A simple theme for moretour.no based on Cororlla
 core        = 7.x
-engine      = phptemplate
+release     = 7.x-3.x
 base theme  = corolla
 
 stylesheets[all][]   = local.css
-stylesheets[all][]   = colors.css
+stylesheets[all][]   = color/colors.css
 
-regions[header_menu]    = Header menu
-regions[footer_menu]    = Footer menu
-regions[sidebar_first]  = First sidebar
-regions[sidebar_second] = Second sidebar
-regions[highlight]      = Highlighted
-regions[content_top]    = Content top
-regions[content]        = Content
-regions[content_bottom] = Content bottom
+regions[sidebar_first]  = Sidebar first
+regions[sidebar_second] = Sidebar second
+regions[highlighted]    = Highlighted
+regions[content]        = Main content
+regions[content_aside]  = Content bottom panel
+regions[menu_bar]       = Menu Bar
+regions[header]         = Header panel
+; regions[three_33_first]  = Top panel first
+; regions[three_33_second] = Top panel second
+; regions[three_33_third]  = Top panel third
+regions[secondary_content] = Features panel
+regions[tertiary_content]  = Bottom panel
+; regions[four_first]   = Footer panel first
+; regions[four_second]  = Footer panel second
+; regions[four_third]   = Footer panel third
+; regions[four_fourth]  = Footer panel fourth
+regions[footer]         = Footer
 regions[help]           = Help
 regions[page_top]       = Page top
 regions[page_bottom]    = Page bottom
 
-settings[shortcut_module_link] = 1
-settings[base_font_size]        = '12px'
-settings[sidebar_first_weight]  = '1'
-settings[sidebar_second_weight] = '2'
-settings[layout_1_min_width]    = '550px'
-settings[layout_1_max_width]    = '800px'
-settings[layout_2_min_width]    = '750px'
-settings[layout_2_max_width]    = '960px'
-settings[layout_3_min_width]    = '800px'
-settings[layout_3_max_width]    = '1000px'
-settings[copyright_information] = '© 2010 Your Name.'
