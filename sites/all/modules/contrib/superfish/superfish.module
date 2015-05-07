@@ -1014,10 +1014,10 @@ function superfish_contents($delta = 0) {
       if ($smallscreen > 0 && superfish_library('javascript', 'sfsmallscreen.js', 'check')) {
         $smallset = variable_get('superfish_smallset_' . $delta, '');
         if (empty($smallset)) {
-          $sfplugins['smallscreen']['title'] = $output['subject'];
+          $sfplugins['smallscreen']['title'] = t($output['subject']);
         }
         else {
-          $sfplugins['smallscreen']['title'] = $smallset;
+          $sfplugins['smallscreen']['title'] = t($smallset);
         }
       }
       $sfplugins = array_remove_empty($sfplugins);
