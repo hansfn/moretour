@@ -141,6 +141,7 @@ function moretour_form_signup_node_form_alter(&$form, &$form_state, $form_id) {
   if (in_array('spiller', $user->roles)) {
     $form['field_score']['#access'] = FALSE;
     $form['field_place']['#access'] = FALSE;
+    $form['revision_information']['#access'] = FALSE;
   }
 }
 
