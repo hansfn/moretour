@@ -10,9 +10,10 @@ function moretour_views_query_alter(&$view, &$query) {
   if (empty($path)) {
     $path = $current_path;
   }
+  $path_parts = explode('/', $path);
   // Modify year condition in blogg content page.
   if ($view->name == 'blogg_content_pane') {
-    $year = array_shift(explode('/', $path));
+    $year = array_shift($path_parts);
     if ($year == 'admin') {
       return;
     }
@@ -31,11 +32,12 @@ function moretour_views_query_alter(&$view, &$query) {
   }
   // Modify year condition in all ranking queries.
   elseif ($view->name == 'ranking') {
-    $year = array_shift(explode('/', $path));
+    $year = array_shift($path_parts);
     if ($year == 'admin') {
       return;
     }
-    $year_tid = array_shift(array_keys(taxonomy_get_term_by_name($year, 'year')));
+    $year_tids = array_keys(taxonomy_get_term_by_name($year, 'year'));
+    $year_tid = array_shift($year_tids);
     // Traverse through the 'where' part of the query.
     foreach ($query->where as &$condition_group) {
       foreach ($condition_group['conditions'] as $key => $condition) {
