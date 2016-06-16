@@ -691,7 +691,12 @@ function masquerade_block_1_validate($form, &$form_state) {
     form_set_error('masquerade_user_field', t('You cannot masquerade as yourself. Please choose a different user to masquerade as.'));
   }
   elseif (variable_get('maintenance_mode', 0) && !user_access('access site in maintenance mode', $masq_user)) {
-    form_set_error('masquerade_user_field', t('It is not possible to masquerade in off-line mode as !user does not have the %config-perm permission. Please <a href="@site-maintenance">set the site status</a> to "online" to masquerade as !user.', array('!user' => theme('username', array('account' => $masq_user)), '%config-perm' => 'use the site in maintenance mode', '@site-maintenance' => url('admin/settings/site-maintenance'))));
+    form_set_error('masquerade_user_field', t('It is not possible to masquerade in maintenance mode as !user does not have the %config-perm permission. Please <a href="!site-maintenance">change the site status</a> and uncheck %maintenance-label checkbox to masquerade as !user.', array(
+      '!user' => theme('username', array('account' => $masq_user)),
+      '%config-perm' => t('Use the site in maintenance mode'),
+      '%maintenance-label' => t('Put site into maintenance mode'),
+      '!site-maintenance' => url('admin/config/development/maintenance'),
+      )));
   }
   else {
     $form_state['values']['masquerade_user_field'] = $name;
@@ -839,7 +844,12 @@ function masquerade_switch_user($uid) {
   }
 
   if (variable_get('maintenance_mode', 0) && !user_access('access site in maintenance mode', $new_user)) {
-    drupal_set_message(t('It is not possible to masquerade in off-line mode as %user does not have the %config-perm permission. Please <a href="@site-maintenance">set the site status</a> to "online" to masquerade as %user.', array('%user' => $new_user->name, '%config-perm' => 'use the site in maintenance mode', '@site-maintenance' => url('admin/settings/site-maintenance'))));
+    drupal_set_message(t('It is not possible to masquerade in maintenance mode as %user does not have the %config-perm permission. Please <a href="!site-maintenance">change the site status</a> and uncheck %maintenance-label checkbox to masquerade as %user.', array(
+      '%user' => $new_user->name,
+      '%config-perm' => t('Use the site in maintenance mode'),
+      '%maintenance-label' => t('Put site into maintenance mode'),
+      '!site-maintenance' => url('admin/config/development/maintenance'),
+      )));
     return FALSE;
   }
 
