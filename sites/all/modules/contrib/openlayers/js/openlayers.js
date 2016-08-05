@@ -65,13 +65,8 @@ Drupal.behaviors.openlayers = {
 
             // Change image, CSS, and proxy paths if specified
             if (map.image_path) {
-              Drupal.openlayers.console.error("HFN.");
-              Drupal.openlayers.console.error(map.image_path);
-              Drupal.openlayers.console.error("HFN.");
               OpenLayers.ImgPath = Drupal.openlayers.relatePath(map.image_path,
                 Drupal.settings.basePath);
-              Drupal.openlayers.console.error(OpenLayers.ImgPath);
-              Drupal.openlayers.console.error("HFN.");
             }
             if (map.css_path) {
               options.theme = Drupal.openlayers.relatePath(map.css_path,
@@ -98,14 +93,6 @@ Drupal.behaviors.openlayers = {
 
             // Finally, attach behaviors
             Drupal.attachBehaviors(this);
-
-            if ($.browser.msie) {
-              $(window).load(function() {
-                openlayers.render(map.id);
-              });
-            } else {
-              openlayers.render(map.id);
-            }
           }
           catch (e) {
             var errorMessage = e.name + ': ' + e.message;

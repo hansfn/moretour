@@ -3,7 +3,7 @@ Read More Control module - http://drupal.org/sandbox/Monochrome/1088582
 
 DESCRIPTION
 ------------
-A module to control when the teaser Read More link that appears in Drupal 7.
+A module to control when to show the Read More link that appears in Drupal 7.
 
 There is no mechanism in core to decide if the Read More link should appear.
 This means that this link will always show no matter if there is additional
@@ -11,18 +11,26 @@ content to display. This module tries to overcome this issue by allowing
 administrators to determine how to handle this link in relation to both the
 content type and individual fields.
 
+As of version 7.x-1.1, the module can also be used to add Read More links to
+other view modes and also other entity types. Core Drupal defined modes have
+little additional functionality; the node RSS and Search Results page are about
+the only additional displays that will accept a Read More link.
+
+The module Entity view modes will allow users to define custom view modes that
+will be customizble to allow users to append Read More links at will.
+
+Note that some themes only display links on node teaser views, so these may
+need twicking to get the link to appear.
+
 REQUIREMENTS
 ------------
 Drupal 7.x
 
 INSTALLATION
 ------------
-1.  Checkout the sandbox project using GIT.
-    
-    Visit the Version control tab for full directions.
-    http://drupal.org/project/1088582/git-instructions
-    
-2.  Copy the cloned Read More Control modules into your modules directory.
+1.  Download the module from http://drupal.org/project/readmorecontrol
+
+2.  Copy the module Read More Control modules into your modules directory.
     This is normally the "sites/all/modules" directory.
 
 3.  Go to admin/build/modules. Enable the module.
@@ -34,7 +42,6 @@ As per any module, back up your site and run update.php.
 
 USAGE
 -----
-
 By default, the module does not do anything, it must be configured first.
 
 1 - Global settings
@@ -82,15 +89,22 @@ Note:
   appear. If display types or display type settings are different, then the two
   different views are considered different and this would trigger a Read more
   link. 
+* More or less options may show here depending on the display mode and entity
+  type that is being configured.
 
-2 - Content type settings
--------------------------
+2 - Display settings
+--------------------
 
-Visit the content type edit page to configure this.
+Every custom display mode now has these options. Settings that were once found
+in the content types edit page are now found under the default display settings.
 
 These have the same options as above. Additionally, there is a "Default" option.
 This effectively means that you want the global settings used rather than
 overriding this value here.
+
+If a custom view mode uses the default settings, the view mode settings for the
+Default view mode are first checked, and if not set, then the global defaults
+are used.
 
 3 - Instance settings
 ---------------------
@@ -140,8 +154,8 @@ AUTHORS
 -------
 Alan D. - http://drupal.org/user/198838.
 
-Alan took over the early sandbox prototype and developed this into the module it
-is now with support from GloDigital (www.glodigital.com.au).
+Alan took over the very early sandbox prototype and developed this into the 
+module it is now.
 
 Alexis Ryan (Monochrome) - http://drupal.org/user/1147898.
 

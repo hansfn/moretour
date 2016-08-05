@@ -51,7 +51,7 @@ class ReadMoreControlTestCase extends DrupalWebTestCase {
     $this->assertNoFieldChecked('edit-readmorecontrol-node-when-required');
     $this->assertNoFieldChecked('edit-readmorecontrol-node-never');
 
-    $edit = array('readmorecontrol_node' => 'when_required');
+    $edit = array('readmorecontrol_behaviour__node_' => 'when_required');
     $this->drupalPost('admin/structure/types/manage/page', $edit, t('Save content type'));
     $this->assertRaw(t('The content type %type has been updated.', array('%type' => 'Basic page')));
     // Check that there is no strange interaction with other types.
@@ -72,7 +72,7 @@ class ReadMoreControlTestCase extends DrupalWebTestCase {
     $this->drupalGet('admin/structure/types/manage/article');
     $this->assertFieldChecked('edit-readmorecontrol-node-default');
 
-    $edit = array('readmorecontrol_node' => 'never');
+    $edit = array('readmorecontrol_behaviour__node_' => 'never');
     $this->drupalPost('admin/structure/types/manage/pp', $edit, t('Save content type'));
     $this->assertRaw(t('The content type %type has been updated.', array('%type' => 'Basic page')));
 
@@ -112,17 +112,17 @@ class ReadMoreControlTestCase extends DrupalWebTestCase {
 
     // Configure the settings for each type.
     // Set the article type to always display.
-    $edit = array('readmorecontrol_node' => 'always');
+    $edit = array('readmorecontrol_behaviour__node_' => 'always');
     $this->drupalPost('admin/structure/types/manage/page', $edit, t('Save content type'));
     $this->assertRaw(t('The content type %type has been updated.', array('%type' => 'Basic page')));
 
     // Set the article type to never display.
-    $edit = array('readmorecontrol_node' => 'never');
+    $edit = array('readmorecontrol_behaviour__node_' => 'never');
     $this->drupalPost('admin/structure/types/manage/article', $edit, t('Save content type'));
     $this->assertRaw(t('The content type %type has been updated.', array('%type' => 'Article')));
 
     // Set the test type to conditionally display.
-    $edit = array('readmorecontrol_node' => 'when_required');
+    $edit = array('readmorecontrol_behaviour__node_' => 'when_required');
     $this->drupalPost('admin/structure/types/manage/test', $edit, t('Save content type'));
     $this->assertRaw(t('The content type %type has been updated.', array('%type' => 'Test')));
 
