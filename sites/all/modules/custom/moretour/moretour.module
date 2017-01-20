@@ -124,11 +124,14 @@ function moretour_views_api() {
  * Implements hook_form_alter().
  */
 function moretour_form_alter(&$form, &$form_state, $form_id) {
-  // Ensure that the current year is selected for signups and tournaments.
   if (($form_id == 'signup_node_form') || ($form_id == 'tournament_with_signup_node_form')) {
-    $current_year_tid = variable_get('moretour_current_year_tid');
-    $lang = $form['field_year']['#language'];
-    $form['field_year'][$lang]['#default_value'] = array($current_year_tid);
+    $node = $form_state['node'];
+    // Ensure that the current year is selected for NEW signups and tournaments.
+    if (!isset($node->nid) || isset($node->is_new)) {
+      $current_year_tid = variable_get('moretour_current_year_tid');
+      $lang = $form['field_year']['#language'];
+      $form['field_year'][$lang]['#default_value'] = array($current_year_tid);
+    }
     $form['field_year']['#disabled'] = TRUE;
   }
 }
