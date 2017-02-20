@@ -5,7 +5,7 @@ function token_tweaks_settings_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Maximum depth limit for the token UI'),
     '#description' => t('Lowering this value with limit the depth of the tokens built for the token tree. Increasing this value will allow more tokens to be visible but may affect performance. The default value is <em>4</em>.'),
-    '#default_value' => variable_get('token_tree_recursion_limit', 4),
+    '#default_value' => variable_get('token_tree_recursion_limit', 3),
     '#options' => drupal_map_assoc(range(1, 9)),
   );
 

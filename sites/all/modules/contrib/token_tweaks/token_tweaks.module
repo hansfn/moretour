@@ -17,7 +17,7 @@ function token_tweaks_menu() {
 }
 
 function token_tweaks_preprocess_token_tree(&$variables) {
-  $variables['recursion_limit'] = min(variable_get('token_tree_recursion_limit', 4), $variables['recursion_limit']);
+  $variables['recursion_limit'] = min(variable_get('token_tree_recursion_limit', 3), $variables['recursion_limit']);
 }
 
 function token_tweaks_module_implements_alter(&$implementations, $hook) {
