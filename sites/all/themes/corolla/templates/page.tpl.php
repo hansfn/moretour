@@ -49,11 +49,11 @@
     </div>
 
     <?php if (
-      isset($page['three_33_top']) ||
-      isset($page['three_33_first']) ||
-      isset($page['three_33_second']) ||
-      isset($page['three_33_third']) ||
-      isset($page['three_33_bottom'])
+      $page['three_33_top'] ||
+      $page['three_33_first'] ||
+      $page['three_33_second'] ||
+      $page['three_33_third'] ||
+      $page['three_33_bottom']
       ): ?>
       <div id="top-panels-wrapper">
         <div class="container clearfix">
@@ -174,10 +174,10 @@
     <?php endif; ?>
 
     <?php if (
-      isset($page['four_first']) ||
-      isset($page['four_second']) ||
-      isset($page['four_third']) ||
-      isset($page['four_fourth'])
+      $page['four_first'] ||
+      $page['four_second'] ||
+      $page['four_third'] ||
+      $page['four_fourth']
       ): ?>
       <div id="footer-panels-wrapper">
         <div class="container clearfix">
