@@ -14,13 +14,19 @@ class views_bulk_operations_handler_field_operations extends views_handler_field
 
     // Update old settings
     if (!empty($options['vbo']) && empty($this->options['vbo_operations'])) {
-      $this->options['vbo_operations'] = $options['vbo']['operations'];
-      unset($options['vbo']['operations']);
+      if (!empty($options['vbo']['operations'])) {
+	$this->options['vbo_operations'] = $options['vbo']['operations'];
+	unset($options['vbo']['operations']);
+      }
       $this->options['vbo_settings'] = $options['vbo'] + $this->options['vbo_settings'];
     }
     // When updating old Views it is possible for this value to stay empty.
     if (empty($this->options['vbo_settings']['entity_load_capacity'])) {
       $this->options['vbo_settings']['entity_load_capacity'] = 10;
+    }
+
+    if (empty($this->options['vbo_operations'])) {
+      $this->options['vbo_operations'] = array();
     }
 
     foreach ($this->options['vbo_operations'] as $operation_id => &$operation_options) {
