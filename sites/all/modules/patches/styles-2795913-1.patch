@@ -1,0 +1,10 @@
+--- a/contrib/file_styles/includes/styles/FileStyles.inc
++++ b/contrib/file_styles/includes/styles/FileStyles.inc
+@@ -198,4 +198,7 @@ class FileStyles extends StylesDefault {
+ 
+   function imageStyle($effect) {
+     $this->setImageStyle($effect['image_style']);
++    // Prevent original width/height from ending up in the generated img-tag of a thumbnail
++    $this->setHeight(null);
++    $this->setWidth(null);
+   }

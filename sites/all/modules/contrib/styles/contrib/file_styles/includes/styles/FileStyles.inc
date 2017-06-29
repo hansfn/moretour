@@ -198,6 +198,9 @@ class FileStyles extends StylesDefault {
 
   function imageStyle($effect) {
     $this->setImageStyle($effect['image_style']);
+    // Prevent original width/height from ending up in the generated img-tag of a thumbnail
+    $this->setHeight(null);
+    $this->setWidth(null);
   }
 
   function linkToMedia($effect) {
