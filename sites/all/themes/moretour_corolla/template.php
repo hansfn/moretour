@@ -41,6 +41,11 @@ function moretour_corolla_preprocess(&$variables, $hook) {
   }
   if (preg_match('#^(\d{4})(/.*)?#', $path, $matches)) {
     $year = $matches[1];
+  }
+  else if (preg_match('#^(turnering|blogg)/(\d{4})-(.*)#', $path, $matches)) {
+    $year = $matches[2];
+  }
+  if (!empty($year)) {
     // Append year to the site name/title.
     if ($hook == 'page') {
       $variables['site_name'] .= " $year";
@@ -48,9 +53,10 @@ function moretour_corolla_preprocess(&$variables, $hook) {
     else {
       $variables['head_title'] .= " $year";
     }
-    // Use 2013 specific logo
     if (!empty($variables['site_logo'])) {
+      if ($year != '2017') { // HFN - TBD
       $variables['site_logo'] = str_replace('NOYEAR', $year, $variables['site_logo']);
+      }
     }
   }
 }
