@@ -54,7 +54,7 @@ function moretour_corolla_preprocess(&$variables, $hook) {
       $variables['head_title'] .= " $year";
     }
     if (!empty($variables['site_logo'])) {
-      if ($year != '2017') { // HFN - TBD
+      if (!in_array($year, array('2017', '2018'))) { // HFN - TBD
       $variables['site_logo'] = str_replace('NOYEAR', $year, $variables['site_logo']);
       }
     }
